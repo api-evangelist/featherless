@@ -1,0 +1,116 @@
+aid: featherless
+url: https://raw.githubusercontent.com/api-evangelist/featherless/refs/heads/main/apis.yml
+name: Featherless AI
+kind: company
+description: Featherless AI is a serverless LLM inference platform that serves thousands
+  of open-weight models from the Hugging Face catalog behind a single OpenAI-compatible
+  REST API. It uses flat monthly subscription pricing with unlimited tokens rather
+  than per-token billing, exposing chat completions, text completions, an embeddings
+  endpoint, and a large models catalog.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI
+- LLM
+- Inference
+- Serverless
+- Open Models
+created: '2026-06-21'
+modified: '2026-06-21'
+specificationVersion: '0.19'
+apis:
+- aid: featherless:featherless-chat-completions-api
+  name: Featherless Chat Completions API
+  tags:
+  - Chat
+  - Completions
+  - LLM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
+  properties:
+  - url: https://featherless.ai/docs/completions
+    type: Documentation
+  - url: https://featherless.ai/docs/api-examples-and-snippets
+    type: APIReference
+  - url: openapi/featherless-openapi.yml
+    type: OpenAPI
+  - url: asyncapi/featherless-asyncapi.yml
+    type: AsyncAPI
+  - url: collections/featherless.postman_collection.json
+    type: Postman
+  description: OpenAI-compatible chat completions across thousands of open-weight
+    Hugging Face models, with streaming, tool calling, vision messages, and the full
+    set of sampling parameters (temperature, top_p, top_k, min_p, penalties).
+- aid: featherless:featherless-completions-api
+  name: Featherless Completions API
+  tags:
+  - Completions
+  - Text Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
+  properties:
+  - url: https://featherless.ai/docs/completions
+    type: Documentation
+  - url: https://featherless.ai/docs/api-examples-and-snippets
+    type: APIReference
+  - url: openapi/featherless-openapi.yml
+    type: OpenAPI
+  - url: collections/featherless.postman_collection.json
+    type: Postman
+  description: OpenAI-compatible legacy text completions endpoint accepting a prompt
+    string (or array for parallel inference) against any catalog model, with the same
+    sampling controls as chat completions.
+- aid: featherless:featherless-models-api
+  name: Featherless Models API
+  tags:
+  - Models
+  - Catalog
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://featherless.ai/docs/quickstart-guide
+  baseURL: https://api.featherless.ai/v1
+  properties:
+  - url: https://featherless.ai/docs/quickstart-guide
+    type: Documentation
+  - url: openapi/featherless-openapi.yml
+    type: OpenAPI
+  - url: collections/featherless.postman_collection.json
+    type: Postman
+  description: Lists the thousands of open-weight models available for serverless
+    inference, surfaced through an OpenAI-compatible models endpoint for runtime discovery.
+- aid: featherless:featherless-embeddings-api
+  name: Featherless Embeddings API
+  tags:
+  - Embeddings
+  - Vectors
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://featherless.ai/docs/embeddings
+  baseURL: https://api.featherless.ai/v1
+  properties:
+  - url: https://featherless.ai/docs/embeddings
+    type: Documentation
+  - url: openapi/featherless-openapi.yml
+    type: OpenAPI
+  - url: collections/featherless.postman_collection.json
+    type: Postman
+  description: OpenAI-compatible embeddings endpoint that returns vector representations
+    for a string or array of inputs using open embedding models such as Qwen3-Embedding,
+    with optional encoding_format and dimensions.
+common:
+- type: GitHubOrganization
+  url: https://github.com/featherless-ai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/featherless-ai
+- type: Website
+  url: https://featherless.ai/
+- type: Documentation
+  url: https://featherless.ai/docs/quickstart-guide
+- type: Plans
+  url: plans/featherless-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/featherless-rate-limits.yml
+- type: FinOps
+  url: finops/featherless-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,97 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Featherless AI
+providerId: featherless
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: true
+tags:
+- AI
+- LLM
+- Inference
+- Serverless
+- Open Models
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Featherless AI spend. Featherless bills a flat monthly
+  subscription per plan (and per unit for business tiers) with unlimited
+  tokens, rather than usage-based per-token rates. Cost is therefore driven
+  by the number and tier of active subscriptions and the concurrency units
+  purchased, not by token volume. Optimization focuses on right-sizing the
+  plan tier (model-size and concurrency needs) instead of reducing token burn.
+notes: >-
+  Subscription prices and tier limits are subject to change; verify against
+  the Featherless plans page during reconciliation.
+sources:
+- https://featherless.ai/pricing
+- https://featherless.ai/docs/plans
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Featherless AI
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Featherless AI
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Featherless AI
+  PublisherName: Featherless AI
+  InvoiceIssuerName: Featherless AI
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: subscription_plan
+  description: Flat monthly subscription per plan tier (Basic, Premium, agent, business).
+  unit: subscription
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: concurrency_units
+  description: Concurrency units purchased on per-unit business plans.
+  unit: units
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: concurrent_connections
+  description: Concurrent in-flight requests consumed against the plan concurrency limit.
+  unit: connections
+  aggregation: max
+  dimensions:
+  - account
+  - plan
+- name: tokens
+  description: Tokens processed; unlimited and not billed under the subscription model. Tracked for utilization only.
+  unit: tokens
+  aggregation: sum
+  dimensions:
+  - account
+  - model
+principles:
+- name: Visibility
+  description: Track active subscriptions, plan tiers, and concurrency-unit counts; monitor live concurrency utilization via the account concurrency stream.
+- name: Allocation
+  description: Map each subscription/API key to a workload or team and assign plan cost to cost centers.
+- name: Optimization
+  description: Right-size the plan tier - downgrade when model-size and concurrency needs are lower, consolidate workloads to fully utilize unlimited-token concurrency before buying more units.
+- name: Accountability
+  description: Assign owners per subscription; review whether each active plan tier and unit count is justified by utilization monthly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

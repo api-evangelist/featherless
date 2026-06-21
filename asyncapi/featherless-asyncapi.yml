@@ -1,0 +1,251 @@
+asyncapi: '2.6.0'
+id: 'urn:ai:featherless:v1:chat-completions:sse'
+info:
+  title: Featherless AI Chat Completions Streaming (HTTP + SSE)
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 description of Featherless AI's **chat completion streaming**
+    surface.
+
+    Featherless AI's core inference API is OpenAI-compatible and does not
+    publish a WebSocket API for chat. The asynchronous / event-style transport
+    documented at https://featherless.ai/docs/completions is **HTTP
+    Server-Sent Events (SSE)** delivered over the same REST endpoint
+    (`POST /chat/completions`) when the request body sets `stream: true`. SSE
+    is a one-way, server-to-client HTTP streaming channel; it is **not**
+    WebSocket.
+
+    This AsyncAPI document models only the streamed events emitted by the SSE
+    response. The request body (model, messages, sampling params) is modeled
+    in the companion OpenAPI document at `openapi/featherless-openapi.yml`.
+
+    Featherless separately offers a Realtime API (beta) following the OpenAI
+    Realtime audio protocol; that beta audio surface is not modeled here.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Featherless AI Terms of Service
+    url: https://featherless.ai/terms
+  x-transport-notes:
+    transport: HTTP Server-Sent Events (SSE)
+    protocol: https
+    direction: server-to-client (one-way)
+    mediaType: text/event-stream
+    triggeredBy: 'POST https://api.featherless.ai/v1/chat/completions with request body { "stream": true }'
+    terminator: 'data: [DONE]'
+    notWebSocket: true
+    source: https://featherless.ai/docs/completions
+defaultContentType: text/event-stream
+servers:
+  featherless:
+    url: api.featherless.ai/v1
+    protocol: https
+    description: |
+      Featherless AI's OpenAI-compatible REST base. Chat completion streaming
+      is delivered as HTTP Server-Sent Events over this base when
+      `stream: true` is set on the JSON request body. AsyncAPI 2.6 does not
+      define a dedicated SSE protocol identifier; `https` is used here and the
+      SSE transport is documented in `info.x-transport-notes` and on each
+      channel.
+    security:
+      - bearerAuth: []
+channels:
+  /chat/completions:
+    description: |
+      Chat completion SSE stream. The client opens this channel by issuing
+      `POST /chat/completions` with `Content-Type: application/json` and a
+      JSON body containing `stream: true`. The server responds with
+      `Content-Type: text/event-stream` and emits a sequence of `data:` lines,
+      each carrying one JSON-serialized `chat.completion.chunk` object,
+      followed by a final `data: [DONE]` line.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+      x-sse:
+        mediaType: text/event-stream
+        eventField: 'data'
+        terminator: '[DONE]'
+    subscribe:
+      operationId: streamChatCompletionChunks
+      summary: Subscribe to streamed chat completion chunks (SSE).
+      description: |
+        After `POST /chat/completions` is issued with `stream: true`, the
+        server emits an ordered sequence of SSE `data:` events. Each `data:`
+        line either carries a JSON-serialized `ChatCompletionChunk` or the
+        literal sentinel `[DONE]` marking end of stream.
+      bindings:
+        http:
+          type: response
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/ChatCompletionChunk'
+          - $ref: '#/components/messages/StreamDone'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: 'Featherless API key'
+      description: |
+        Set the `Authorization: Bearer <FEATHERLESS_API_KEY>` header on the
+        `POST /chat/completions` request that opens the SSE stream.
+  messages:
+    ChatCompletionChunk:
+      name: ChatCompletionChunk
+      title: Streamed chat completion chunk
+      summary: |
+        A single SSE `data:` event carrying one JSON `chat.completion.chunk`
+        object. Many of these are emitted per request, in order.
+      contentType: application/json
+      description: |
+        Sent as `data: {json}\n\n` on the SSE stream. The JSON object's
+        `object` field is always the literal string `chat.completion.chunk`.
+      payload:
+        $ref: '#/components/schemas/ChatCompletionChunk'
+      examples:
+        - name: openingChunk
+          summary: First chunk - establishes role
+          payload:
+            id: chatcmpl-abc123
+            object: chat.completion.chunk
+            created: 1750464000
+            model: Qwen/Qwen2.5-7B-Instruct
+            choices:
+              - index: 0
+                delta:
+                  role: assistant
+                  content: ''
+                finish_reason: null
+        - name: contentChunk
+          summary: Token delta
+          payload:
+            id: chatcmpl-abc123
+            object: chat.completion.chunk
+            created: 1750464000
+            model: Qwen/Qwen2.5-7B-Instruct
+            choices:
+              - index: 0
+                delta:
+                  content: 'Hello'
+                finish_reason: null
+        - name: finalChunk
+          summary: Final chunk - finish_reason set
+          payload:
+            id: chatcmpl-abc123
+            object: chat.completion.chunk
+            created: 1750464000
+            model: Qwen/Qwen2.5-7B-Instruct
+            choices:
+              - index: 0
+                delta: {}
+                finish_reason: stop
+    StreamDone:
+      name: StreamDone
+      title: Stream terminator
+      summary: |
+        The literal SSE event `data: [DONE]` that marks end of stream. Not
+        JSON; the payload is the string `[DONE]`.
+      contentType: text/plain
+      description: |
+        Clients must stop reading the stream when this sentinel is observed.
+      payload:
+        $ref: '#/components/schemas/StreamDoneSentinel'
+      examples:
+        - name: done
+          summary: End-of-stream sentinel
+          payload: '[DONE]'
+  schemas:
+    StreamDoneSentinel:
+      type: string
+      enum:
+        - '[DONE]'
+      description: |
+        End-of-stream sentinel. The full SSE line is `data: [DONE]`.
+    ChatCompletionChunk:
+      type: object
+      description: A streamed chunk of a chat completion response.
+      required:
+        - choices
+        - created
+        - id
+        - model
+        - object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the chat completion. Each chunk has the same ID.
+        choices:
+          type: array
+          description: A list of chat completion choices.
+          items:
+            $ref: '#/components/schemas/ChatCompletionChunkChoice'
+        created:
+          type: integer
+          description: Unix timestamp (seconds) of when the completion was created.
+        model:
+          type: string
+          description: The model used to generate the completion.
+        object:
+          type: string
+          enum:
+            - chat.completion.chunk
+          description: The object type, always `chat.completion.chunk`.
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+    ChatCompletionChunkChoice:
+      type: object
+      required:
+        - delta
+        - finish_reason
+        - index
+      properties:
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatCompletionStreamResponseDelta'
+        finish_reason:
+          type: string
+          nullable: true
+          enum:
+            - stop
+            - length
+            - tool_calls
+          description: |
+            Reason the model stopped generating. Null on all chunks except
+            the final content chunk.
+    ChatCompletionStreamResponseDelta:
+      type: object
+      description: A chat completion delta generated by streamed model responses.
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+            - user
+            - assistant
+            - tool
+        content:
+          type: string
+          nullable: true
+          description: The contents of the chunk message (token slice).
+        tool_calls:
+          type: array
+          description: Streaming tool-call fragments.
+          items:
+            type: object
+    CompletionUsage:
+      type: object
+      nullable: true
+      description: Usage statistics; present on the final chunk when requested.
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer

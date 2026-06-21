@@ -1,0 +1,62 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Featherless AI
+providerId: featherless
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- LLM
+- Inference
+- Serverless
+- Open Models
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Featherless AI does not meter tokens. Instead each subscription plan grants
+  a fixed number of concurrent connections (concurrency limit), and tokens
+  are unlimited within that concurrency. Smaller models allow higher effective
+  throughput than larger ones. The number of in-flight requests an account
+  may run is therefore the primary limit; additional requests beyond the plan
+  concurrency are rejected until a slot frees. Live concurrency state can be
+  observed via the account concurrency stream.
+notes: >-
+  Verify per-plan concurrency on the Featherless plans/concurrency pages on
+  reconciliation; values change as users move between Basic, Premium, agent,
+  and business tiers.
+sources:
+- https://featherless.ai/docs/concurrency
+- https://featherless.ai/docs/concurrency-limits
+- https://featherless.ai/docs/plans
+responseCodes:
+  throttled: 429
+limits:
+- name: Concurrent Connections
+  scope: account
+  metric: connections
+  limit: see plan (Basic 2, Premium 4, agent/business 8 per unit)
+  notes: Maximum simultaneous in-flight inference requests per account/plan.
+- name: Tokens
+  scope: account
+  metric: tokens
+  limit: unlimited within plan concurrency
+  notes: Featherless bills a flat monthly subscription; tokens are not metered.
+- name: Model Size
+  scope: account
+  metric: parameters
+  limit: see plan (Basic up to 15B; Premium any size)
+  notes: Larger models reduce effective per-connection throughput.
+policies:
+- name: Concurrency-Based Limiting
+  description: >-
+    Throughput is governed by the number of concurrent connections in the
+    plan rather than by token quotas; excess concurrent requests are rejected
+    with HTTP 429 until a slot is available.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After when concurrency is saturated.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

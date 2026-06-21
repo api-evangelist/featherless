@@ -1,0 +1,164 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Featherless AI
+providerId: featherless
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: true
+tags:
+- AI
+- LLM
+- Inference
+- Serverless
+- Open Models
+- Plans
+description: >-
+  Featherless AI uses flat monthly subscription pricing with unlimited tokens
+  rather than per-token billing. Each tier sets a fixed number of concurrent
+  connections plus limits on model size and context length; smaller models
+  allow higher effective throughput than larger ones. Consumer plans run from
+  Feather Basic to Feather Premium and agent tiers; business plans are sold
+  per unit with private model deployment available at the top end.
+notes: >-
+  Representative tiers and prices as published on the Featherless plans page;
+  verify the current catalog, concurrency, and context limits on the page,
+  which change over time.
+sources:
+- https://featherless.ai/pricing
+- https://featherless.ai/docs/plans
+- https://featherless.ai/docs/concurrency
+plans:
+- id: featherless-basic
+  name: Feather Basic
+  type: flat
+  description: >-
+    Entry hobby tier with unlimited tokens, access to any model up to 15B
+    parameters, and 2 concurrent connections.
+  entries:
+  - label: Feather Basic Subscription
+    name: basic
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $10 per month
+    userMultiplied: false
+  - label: Concurrency
+    name: basic_concurrency
+    type: flat
+    metric: connections
+    limit: 2
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Chat Completions
+  - name: Completions
+  - name: Embeddings
+  - name: Models (up to 15B)
+- id: featherless-premium
+  name: Feather Premium
+  type: flat
+  description: >-
+    Dev/testing tier with unlimited tokens, access to any model in the
+    catalogue regardless of size, and 4 concurrent connections.
+  entries:
+  - label: Feather Premium Subscription
+    name: premium
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $25 per month
+    userMultiplied: false
+  - label: Concurrency
+    name: premium_concurrency
+    type: flat
+    metric: connections
+    limit: 4
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Chat Completions
+  - name: Completions
+  - name: Embeddings
+  - name: Models (any size)
+- id: featherless-agent-229b
+  name: Feather 229B Full Context
+  type: flat
+  description: >-
+    Agent/business tier with models up to 229B parameters, context up to
+    256K, and 8 concurrent connections per unit.
+  entries:
+  - label: 229B Full Context Subscription
+    name: agent_229b
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $100 per unit per month
+    userMultiplied: false
+  - label: Concurrency
+    name: agent_229b_concurrency
+    type: flat
+    metric: connections
+    limit: 8
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included per unit
+    userMultiplied: false
+  elements:
+  - name: Chat Completions
+  - name: Completions
+  - name: Models (up to 229B)
+  - name: Context up to 256K
+- id: featherless-max
+  name: Feather Max
+  type: flat
+  description: >-
+    Top business tier with full catalogue access at any model size, context
+    up to 256K, and 8 concurrent connections per unit; supports private model
+    deployment.
+  entries:
+  - label: Feather Max Subscription
+    name: max
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $200 per unit per month
+    userMultiplied: false
+  - label: Concurrency
+    name: max_concurrency
+    type: flat
+    metric: connections
+    limit: 8
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included per unit
+    userMultiplied: false
+  elements:
+  - name: Chat Completions
+  - name: Completions
+  - name: Models (any size)
+  - name: Context up to 256K
+  - name: Private Model Deployment
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

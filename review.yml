@@ -1,0 +1,71 @@
+aid: featherless
+name: Featherless AI
+review:
+  question: Does Featherless AI expose a documented public WebSocket API?
+  answer: false
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    Per API Evangelist scope (2026-05-29), HTTP Server-Sent Events (SSE) is
+    in-scope for AsyncAPI modeling. An AsyncAPI 2.6 document was created at
+    asyncapi/featherless-asyncapi.yml describing the chat completion SSE
+    stream (POST /chat/completions with stream=true). No WebSocket surface
+    was modeled for the core inference API because the documented OpenAI-
+    compatible endpoints stream via SSE, not WebSocket. Featherless does
+    document a separate Realtime API (beta) that follows the OpenAI Realtime
+    audio protocol; that beta audio surface is noted but not modeled here.
+findings:
+  summary: |
+    Featherless AI's core inference API is OpenAI-compatible and exposes REST
+    (HTTPS) endpoints under https://api.featherless.ai/v1 - chat completions,
+    completions, embeddings, models, and tokenize. Streaming for chat and
+    text completions is delivered as HTTP Server-Sent Events (SSE) via the
+    stream: true parameter on the REST endpoint; SSE is a one-way HTTP
+    streaming transport and is not WebSocket. Featherless separately
+    publishes a Realtime API (beta) implementing the OpenAI Realtime audio
+    protocol (speech-to-text / text-to-speech) over the model catalog; that
+    beta protocol may use a realtime transport but is out of scope for this
+    REST/SSE-focused review and is not modeled in the OpenAPI document.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.featherless.ai/v1
+      documented: true
+    - protocol: SSE
+      scheme: https
+      note: Server-Sent Events delivered over the same REST chat/text completions endpoint when stream=true. Not WebSocket.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented for the OpenAI-compatible inference API. A separate Realtime API (beta) following the OpenAI Realtime audio protocol exists but is out of scope here.
+  endpointsConfirmedRest:
+    - POST https://api.featherless.ai/v1/chat/completions
+    - POST https://api.featherless.ai/v1/completions
+    - POST https://api.featherless.ai/v1/embeddings
+    - GET  https://api.featherless.ai/v1/models
+    - POST https://api.featherless.ai/v1/tokenize
+sources:
+  - url: https://featherless.ai/docs/quickstart-guide
+    type: Documentation
+    note: Lists REST base URL https://api.featherless.ai/v1 and Bearer auth.
+  - url: https://featherless.ai/docs/completions
+    type: Documentation
+    note: Documents /v1/chat/completions and /v1/completions with sampling params and streaming.
+  - url: https://featherless.ai/docs/embeddings
+    type: Documentation
+    note: Documents /v1/embeddings (OpenAI-compatible).
+  - url: https://featherless.ai/docs/realtime-api
+    type: Documentation
+    note: Separate Realtime API (beta) using the OpenAI Realtime audio protocol; out of scope for this REST/SSE review.
+actions:
+  asyncapiPath: asyncapi/featherless-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface is documented for the core OpenAI-compatible
+    inference API. Under the 2026-05-29 scope that allows SSE in AsyncAPI, an
+    AsyncAPI 2.6 document was authored for the chat completion SSE stream,
+    with HTTP+SSE transport documented explicitly (server protocol, channel
+    bindings, info.x-transport-notes) so SSE is never misrepresented as
+    WebSocket.

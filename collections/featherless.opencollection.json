@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Featherless AI API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a chat completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.featherless.ai/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"model\": \"Qwen/Qwen2.5-7B-Instruct\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"Hello!\" }\n  ],\n  \"max_tokens\": 1000,\n  \"stream\": false\n}"
+            }
+          },
+          "docs": "Generates a model response for a chat conversation. Set stream:true for Server-Sent Events."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Completions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a text completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.featherless.ai/v1/completions",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"model\": \"meta-llama/Meta-Llama-3.1-8B-Instruct\",\n  \"prompt\": \"Your prompt here\",\n  \"max_tokens\": 1000\n}"
+            }
+          },
+          "docs": "Generates a text completion for the provided prompt. The prompt may be a string or array of strings (parallel inference)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Embeddings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.featherless.ai/v1/embeddings",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"model\": \"Qwen/Qwen3-Embedding-8B\",\n  \"input\": \"The quick brown fox\",\n  \"encoding_format\": \"float\"\n}"
+            }
+          },
+          "docs": "Returns vector embeddings for the supplied input using an open embedding model."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.featherless.ai/v1/models"
+          },
+          "docs": "Lists the open-weight models available for serverless inference."
+        }
+      ]
+    }
+  ]
+}
