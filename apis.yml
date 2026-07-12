@@ -97,6 +97,10 @@ apis:
     for a string or array of inputs using open embedding models such as Qwen3-Embedding,
     with optional encoding_format and dimensions.
 common:
+- type: DomainSecurity
+  url: security/featherless-domain-security.yml
+- type: Authentication
+  url: authentication/featherless-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/featherless-ai
 - type: LinkedIn
@@ -111,6 +115,8 @@ common:
   url: rate-limits/featherless-rate-limits.yml
 - type: FinOps
   url: finops/featherless-finops.yml
+- url: https://featherless.ai/blog
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

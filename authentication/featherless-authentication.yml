@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/featherless-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: Featherless API key
+  description: 'Set `Authorization: Bearer <FEATHERLESS_API_KEY>`. Keys are created in the Featherless
+    dashboard.'
+  sources:
+  - openapi/featherless-openapi.yml
