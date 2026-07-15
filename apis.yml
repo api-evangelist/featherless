@@ -97,6 +97,8 @@ apis:
     for a string or array of inputs using open embedding models such as Qwen3-Embedding,
     with optional encoding_format and dimensions.
 common:
+- type: AgenticAccess
+  url: agentic-access/featherless-agentic-access.yml
 - type: DomainSecurity
   url: security/featherless-domain-security.yml
 - type: Authentication
