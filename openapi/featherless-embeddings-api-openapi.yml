@@ -1,0 +1,133 @@
+openapi: 3.0.1
+info:
+  title: Featherless AI Chat Embeddings API
+  description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
+  termsOfService: https://featherless.ai/terms
+  contact:
+    name: Featherless AI Support
+    url: https://featherless.ai
+  version: '1.0'
+servers:
+- url: https://api.featherless.ai/v1
+  description: OpenAI-compatible base URL for Featherless AI inference.
+security:
+- bearerAuth: []
+tags:
+- name: Embeddings
+  description: OpenAI-compatible text embeddings.
+paths:
+  /embeddings:
+    post:
+      operationId: createEmbedding
+      tags:
+      - Embeddings
+      summary: Create embeddings
+      description: Returns vector embeddings for the supplied input using an open embedding model (for example Qwen/Qwen3-Embedding-8B). OpenAI compatible.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmbeddingRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmbeddingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  schemas:
+    CreateEmbeddingRequest:
+      type: object
+      required:
+      - model
+      - input
+      properties:
+        model:
+          type: string
+          description: Embedding model identifier, e.g. `Qwen/Qwen3-Embedding-8B`.
+        input:
+          description: A string or array of strings to embed.
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        encoding_format:
+          type: string
+          enum:
+          - float
+          - base64
+          default: float
+        dimensions:
+          type: integer
+          nullable: true
+          description: Output dimensionality, for models that support it.
+    CreateEmbeddingResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        model:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              object:
+                type: string
+                enum:
+                - embedding
+              index:
+                type: integer
+              embedding:
+                type: array
+                items:
+                  type: number
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+              nullable: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Featherless API key
+      description: 'Set `Authorization: Bearer <FEATHERLESS_API_KEY>`. Keys are created in the Featherless dashboard.'

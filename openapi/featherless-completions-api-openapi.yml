@@ -1,0 +1,156 @@
+openapi: 3.0.1
+info:
+  title: Featherless AI Chat Completions API
+  description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
+  termsOfService: https://featherless.ai/terms
+  contact:
+    name: Featherless AI Support
+    url: https://featherless.ai
+  version: '1.0'
+servers:
+- url: https://api.featherless.ai/v1
+  description: OpenAI-compatible base URL for Featherless AI inference.
+security:
+- bearerAuth: []
+tags:
+- name: Completions
+  description: OpenAI-compatible legacy text completions.
+paths:
+  /completions:
+    post:
+      operationId: createCompletion
+      tags:
+      - Completions
+      summary: Create a text completion
+      description: 'Generates a text completion for the provided prompt. OpenAI compatible. The `prompt` may be a string or an array of strings; an array is treated as a parallel inference call. Supports streaming via `stream: true`.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompletionRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCompletionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    CreateCompletionRequest:
+      type: object
+      required:
+      - model
+      - prompt
+      properties:
+        model:
+          type: string
+          description: Hugging Face model identifier.
+        prompt:
+          description: Prompt to complete. A string, or an array of strings treated as a parallel inference call.
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        temperature:
+          type: number
+          nullable: true
+        top_p:
+          type: number
+          nullable: true
+        top_k:
+          type: integer
+          nullable: true
+        min_p:
+          type: number
+          nullable: true
+        repetition_penalty:
+          type: number
+          nullable: true
+        max_tokens:
+          type: integer
+          nullable: true
+        stop:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          nullable: true
+        stream:
+          type: boolean
+          default: false
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+              nullable: true
+    CreateCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type: string
+                nullable: true
+        usage:
+          $ref: '#/components/schemas/Usage'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Featherless API key
+      description: 'Set `Authorization: Bearer <FEATHERLESS_API_KEY>`. Keys are created in the Featherless dashboard.'

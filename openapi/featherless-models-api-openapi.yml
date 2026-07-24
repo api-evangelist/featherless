@@ -1,0 +1,87 @@
+openapi: 3.0.1
+info:
+  title: Featherless AI Chat Models API
+  description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
+  termsOfService: https://featherless.ai/terms
+  contact:
+    name: Featherless AI Support
+    url: https://featherless.ai
+  version: '1.0'
+servers:
+- url: https://api.featherless.ai/v1
+  description: OpenAI-compatible base URL for Featherless AI inference.
+security:
+- bearerAuth: []
+tags:
+- name: Models
+  description: Model catalog discovery.
+paths:
+  /models:
+    get:
+      operationId: listModels
+      tags:
+      - Models
+      summary: List models
+      description: Lists the open-weight models available for serverless inference on Featherless AI. OpenAI compatible.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Model identifier.
+        object:
+          type: string
+          enum:
+          - model
+        created:
+          type: integer
+        owned_by:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+              nullable: true
+    ListModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Featherless API key
+      description: 'Set `Authorization: Bearer <FEATHERLESS_API_KEY>`. Keys are created in the Featherless dashboard.'
