@@ -7,7 +7,20 @@ description: Featherless AI is a serverless LLM inference platform that serves t
   REST API. It uses flat monthly subscription pricing with unlimited tokens rather
   than per-token billing, exposing chat completions, text completions, an embeddings
   endpoint, and a large models catalog.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/featherless.png
 tags:
 - AI
 - LLM
@@ -18,84 +31,94 @@ created: '2026-06-21'
 modified: '2026-06-21'
 specificationVersion: '0.19'
 apis:
-- aid: featherless:featherless-chat-completions-api
-  name: Featherless Chat Completions API
+- aid: featherless:featherless-chat-api
+  name: Featherless AI Chat API
+  description: OpenAI-compatible chat completions.
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
   tags:
   - Chat
-  - Completions
-  - LLM
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://featherless.ai/docs/completions
-  baseURL: https://api.featherless.ai/v1
   properties:
-  - url: https://featherless.ai/docs/completions
-    type: Documentation
-  - url: https://featherless.ai/docs/api-examples-and-snippets
-    type: APIReference
-  - url: openapi/featherless-openapi.yml
-    type: OpenAPI
-  - url: asyncapi/featherless-asyncapi.yml
-    type: AsyncAPI
-  - url: collections/featherless.postman_collection.json
-    type: Postman
-  description: OpenAI-compatible chat completions across thousands of open-weight
-    Hugging Face models, with streaming, tool calling, vision messages, and the full
-    set of sampling parameters (temperature, top_p, top_k, min_p, penalties).
+  - type: OpenAPI
+    url: openapi/featherless-chat-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/completions
+  - type: APIReference
+    url: https://featherless.ai/docs/api-examples-and-snippets
+  - type: AsyncAPI
+    url: asyncapi/featherless-asyncapi.yml
+  - type: Postman
+    url: collections/featherless.postman_collection.json
+  - type: Documentation
+    url: https://featherless.ai/docs/quickstart-guide
+  - type: Documentation
+    url: https://featherless.ai/docs/embeddings
 - aid: featherless:featherless-completions-api
-  name: Featherless Completions API
-  tags:
-  - Completions
-  - Text Generation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  name: Featherless AI Completions API
+  description: OpenAI-compatible legacy text completions.
   humanURL: https://featherless.ai/docs/completions
   baseURL: https://api.featherless.ai/v1
-  properties:
-  - url: https://featherless.ai/docs/completions
-    type: Documentation
-  - url: https://featherless.ai/docs/api-examples-and-snippets
-    type: APIReference
-  - url: openapi/featherless-openapi.yml
-    type: OpenAPI
-  - url: collections/featherless.postman_collection.json
-    type: Postman
-  description: OpenAI-compatible legacy text completions endpoint accepting a prompt
-    string (or array for parallel inference) against any catalog model, with the same
-    sampling controls as chat completions.
-- aid: featherless:featherless-models-api
-  name: Featherless Models API
   tags:
-  - Models
-  - Catalog
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://featherless.ai/docs/quickstart-guide
-  baseURL: https://api.featherless.ai/v1
+  - Completions
   properties:
-  - url: https://featherless.ai/docs/quickstart-guide
-    type: Documentation
-  - url: openapi/featherless-openapi.yml
-    type: OpenAPI
-  - url: collections/featherless.postman_collection.json
-    type: Postman
-  description: Lists the thousands of open-weight models available for serverless
-    inference, surfaced through an OpenAI-compatible models endpoint for runtime discovery.
+  - type: OpenAPI
+    url: openapi/featherless-completions-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/completions
+  - type: APIReference
+    url: https://featherless.ai/docs/api-examples-and-snippets
+  - type: AsyncAPI
+    url: asyncapi/featherless-asyncapi.yml
+  - type: Postman
+    url: collections/featherless.postman_collection.json
+  - type: Documentation
+    url: https://featherless.ai/docs/quickstart-guide
+  - type: Documentation
+    url: https://featherless.ai/docs/embeddings
 - aid: featherless:featherless-embeddings-api
-  name: Featherless Embeddings API
+  name: Featherless AI Embeddings API
+  description: OpenAI-compatible text embeddings.
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
   tags:
   - Embeddings
-  - Vectors
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://featherless.ai/docs/embeddings
-  baseURL: https://api.featherless.ai/v1
   properties:
-  - url: https://featherless.ai/docs/embeddings
-    type: Documentation
-  - url: openapi/featherless-openapi.yml
-    type: OpenAPI
-  - url: collections/featherless.postman_collection.json
-    type: Postman
-  description: OpenAI-compatible embeddings endpoint that returns vector representations
-    for a string or array of inputs using open embedding models such as Qwen3-Embedding,
-    with optional encoding_format and dimensions.
+  - type: OpenAPI
+    url: openapi/featherless-embeddings-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/completions
+  - type: APIReference
+    url: https://featherless.ai/docs/api-examples-and-snippets
+  - type: AsyncAPI
+    url: asyncapi/featherless-asyncapi.yml
+  - type: Postman
+    url: collections/featherless.postman_collection.json
+  - type: Documentation
+    url: https://featherless.ai/docs/quickstart-guide
+  - type: Documentation
+    url: https://featherless.ai/docs/embeddings
+- aid: featherless:featherless-models-api
+  name: Featherless AI Models API
+  description: Model catalog discovery.
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/featherless-models-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/completions
+  - type: APIReference
+    url: https://featherless.ai/docs/api-examples-and-snippets
+  - type: AsyncAPI
+    url: asyncapi/featherless-asyncapi.yml
+  - type: Postman
+    url: collections/featherless.postman_collection.json
+  - type: Documentation
+    url: https://featherless.ai/docs/quickstart-guide
+  - type: Documentation
+    url: https://featherless.ai/docs/embeddings
 common:
 - type: AgenticAccess
   url: agentic-access/featherless-agentic-access.yml
