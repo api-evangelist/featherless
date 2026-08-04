@@ -1,0 +1,454 @@
+openapi: 3.0.1
+info:
+  title: Featherless AI API
+  description: >-
+    OpenAI-compatible REST API for the Featherless AI serverless inference
+    platform. A single Bearer-authenticated interface serves thousands of
+    open-weight Hugging Face models for chat completions, legacy text
+    completions, embeddings, and model discovery. Pricing is a flat monthly
+    subscription with unlimited tokens rather than per-token billing.
+  termsOfService: https://featherless.ai/terms
+  contact:
+    name: Featherless AI Support
+    url: https://featherless.ai
+  version: '1.0'
+servers:
+  - url: https://api.featherless.ai/v1
+    description: OpenAI-compatible base URL for Featherless AI inference.
+security:
+  - bearerAuth: []
+tags:
+  - name: Chat
+    description: OpenAI-compatible chat completions.
+  - name: Completions
+    description: OpenAI-compatible legacy text completions.
+  - name: Embeddings
+    description: OpenAI-compatible text embeddings.
+  - name: Models
+    description: Model catalog discovery.
+paths:
+  /chat/completions:
+    post:
+      operationId: createChatCompletion
+      tags:
+        - Chat
+      summary: Create a chat completion
+      description: >-
+        Generates a model response for the given chat conversation. OpenAI
+        compatible. Set `stream: true` to receive the response as
+        Server-Sent Events. Vision is supported by passing image_url content
+        parts in messages, and tool calling by supplying `tools`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatCompletionRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateChatCompletionResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: >-
+                  When `stream` is true, a sequence of `data:` SSE events each
+                  carrying a `chat.completion.chunk` object, terminated by
+                  `data: [DONE]`.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /completions:
+    post:
+      operationId: createCompletion
+      tags:
+        - Completions
+      summary: Create a text completion
+      description: >-
+        Generates a text completion for the provided prompt. OpenAI
+        compatible. The `prompt` may be a string or an array of strings; an
+        array is treated as a parallel inference call. Supports streaming via
+        `stream: true`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompletionRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCompletionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /embeddings:
+    post:
+      operationId: createEmbedding
+      tags:
+        - Embeddings
+      summary: Create embeddings
+      description: >-
+        Returns vector embeddings for the supplied input using an open
+        embedding model (for example Qwen/Qwen3-Embedding-8B). OpenAI
+        compatible.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmbeddingRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmbeddingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /models:
+    get:
+      operationId: listModels
+      tags:
+        - Models
+      summary: List models
+      description: >-
+        Lists the open-weight models available for serverless inference on
+        Featherless AI. OpenAI compatible.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Featherless API key
+      description: >-
+        Set `Authorization: Bearer <FEATHERLESS_API_KEY>`. Keys are created
+        in the Featherless dashboard.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: >-
+        Concurrency limit for the account's plan exceeded. Featherless meters
+        concurrent connections rather than tokens.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    CreateChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          description: Hugging Face model identifier, e.g. `Qwen/Qwen2.5-7B-Instruct`.
+        messages:
+          type: array
+          description: A list of messages comprising the conversation so far.
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        temperature:
+          type: number
+          nullable: true
+          description: Sampling temperature.
+        top_p:
+          type: number
+          nullable: true
+          description: Nucleus sampling probability mass.
+        top_k:
+          type: integer
+          nullable: true
+          description: Limits sampling to the top-k tokens.
+        min_p:
+          type: number
+          nullable: true
+          description: Minimum token probability relative to the most likely token.
+        presence_penalty:
+          type: number
+          nullable: true
+        frequency_penalty:
+          type: number
+          nullable: true
+        repetition_penalty:
+          type: number
+          nullable: true
+        max_tokens:
+          type: integer
+          nullable: true
+          description: Maximum number of tokens to generate.
+        min_tokens:
+          type: integer
+          nullable: true
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          nullable: true
+        seed:
+          type: integer
+          nullable: true
+          description: Random seed; not guaranteed reproducible across servers.
+        tools:
+          type: array
+          description: A list of tools (functions) the model may call.
+          items:
+            type: object
+        stream:
+          type: boolean
+          default: false
+          description: If true, partial deltas are streamed as Server-Sent Events.
+    ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+            - user
+            - assistant
+            - tool
+        content:
+          description: >-
+            String content, or an array of content parts (text and image_url)
+            for vision-capable models.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+    CreateChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+            - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/ChatMessage'
+              finish_reason:
+                type: string
+                nullable: true
+        usage:
+          $ref: '#/components/schemas/Usage'
+    CreateCompletionRequest:
+      type: object
+      required:
+        - model
+        - prompt
+      properties:
+        model:
+          type: string
+          description: Hugging Face model identifier.
+        prompt:
+          description: >-
+            Prompt to complete. A string, or an array of strings treated as a
+            parallel inference call.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        temperature:
+          type: number
+          nullable: true
+        top_p:
+          type: number
+          nullable: true
+        top_k:
+          type: integer
+          nullable: true
+        min_p:
+          type: number
+          nullable: true
+        repetition_penalty:
+          type: number
+          nullable: true
+        max_tokens:
+          type: integer
+          nullable: true
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          nullable: true
+        stream:
+          type: boolean
+          default: false
+    CreateCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+            - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type: string
+                nullable: true
+        usage:
+          $ref: '#/components/schemas/Usage'
+    CreateEmbeddingRequest:
+      type: object
+      required:
+        - model
+        - input
+      properties:
+        model:
+          type: string
+          description: Embedding model identifier, e.g. `Qwen/Qwen3-Embedding-8B`.
+        input:
+          description: A string or array of strings to embed.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        encoding_format:
+          type: string
+          enum:
+            - float
+            - base64
+          default: float
+        dimensions:
+          type: integer
+          nullable: true
+          description: Output dimensionality, for models that support it.
+    CreateEmbeddingResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        model:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              object:
+                type: string
+                enum:
+                  - embedding
+              index:
+                type: integer
+              embedding:
+                type: array
+                items:
+                  type: number
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+    ListModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Model identifier.
+        object:
+          type: string
+          enum:
+            - model
+        created:
+          type: integer
+        owned_by:
+          type: string
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+              nullable: true
