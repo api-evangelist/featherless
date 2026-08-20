@@ -22,6 +22,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/featherless.png
 tags:
+- Artificial Intelligence
+- LLM
+- Inference
+- Serverless
+- Open Models
+tags_raw:
 - AI
 - LLM
 - Inference
