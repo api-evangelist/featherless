@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Featherless AI Chat API
   description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
@@ -46,42 +46,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   schemas:
-    CreateChatCompletionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              message:
-                $ref: '#/components/schemas/ChatMessage'
-              finish_reason:
-                type: string
-                nullable: true
-        usage:
-          $ref: '#/components/schemas/Usage'
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     ChatMessage:
       type: object
       required:
@@ -117,47 +81,56 @@ components:
           items:
             $ref: '#/components/schemas/ChatMessage'
         temperature:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Sampling temperature.
         top_p:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Nucleus sampling probability mass.
         top_k:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Limits sampling to the top-k tokens.
         min_p:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Minimum token probability relative to the most likely token.
         presence_penalty:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         frequency_penalty:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         repetition_penalty:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         max_tokens:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Maximum number of tokens to generate.
         min_tokens:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         stop:
           oneOf:
           - type: string
           - type: array
             items:
               type: string
-          nullable: true
         seed:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Random seed; not guaranteed reproducible across servers.
         tools:
           type: array
@@ -168,6 +141,43 @@ components:
           type: boolean
           default: false
           description: If true, partial deltas are streamed as Server-Sent Events.
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    CreateChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/ChatMessage'
+              finish_reason:
+                type:
+                - string
+                - 'null'
+        usage:
+          $ref: '#/components/schemas/Usage'
     Error:
       type: object
       properties:
@@ -179,17 +189,18 @@ components:
             type:
               type: string
             code:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
   responses:
-    TooManyRequests:
-      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
       content:
         application/json:
           schema:

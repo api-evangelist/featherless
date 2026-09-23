@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Featherless AI Chat Completions API
+  title: Featherless AI Completions API
   description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
   termsOfService: https://featherless.ai/terms
   contact:
@@ -41,19 +41,6 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Usage:
       type: object
@@ -64,6 +51,20 @@ components:
           type: integer
         total_tokens:
           type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
     CreateCompletionRequest:
       type: object
       required:
@@ -81,46 +82,38 @@ components:
             items:
               type: string
         temperature:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         top_p:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         top_k:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         min_p:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         repetition_penalty:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         max_tokens:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         stop:
           oneOf:
           - type: string
           - type: array
             items:
               type: string
-          nullable: true
         stream:
           type: boolean
           default: false
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-              nullable: true
     CreateCompletionResponse:
       type: object
       properties:
@@ -144,10 +137,24 @@ components:
               text:
                 type: string
               finish_reason:
-                type: string
-                nullable: true
+                type:
+                - string
+                - 'null'
         usage:
           $ref: '#/components/schemas/Usage'
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

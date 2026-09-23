@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Featherless AI Chat Models API
+  title: Featherless AI Models API
   description: OpenAI-compatible REST API for the Featherless AI serverless inference platform. A single Bearer-authenticated interface serves thousands of open-weight Hugging Face models for chat completions, legacy text completions, embeddings, and model discovery. Pricing is a flat monthly subscription with unlimited tokens rather than per-token billing.
   termsOfService: https://featherless.ai/terms
   contact:
@@ -48,19 +48,6 @@ components:
           type: integer
         owned_by:
           type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-              nullable: true
     ListModelsResponse:
       type: object
       properties:
@@ -72,6 +59,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Model'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
   responses:
     Unauthorized:
       description: Missing or invalid API key.

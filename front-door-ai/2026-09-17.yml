@@ -1,0 +1,34 @@
+# Front Door AI Index — featherless — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: featherless
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: featherless.ai
+  final_host: featherless.ai
+  ownership: own
+  owner: featherless
+  shares_host_with:
+  - recursal-ai-inc
+  inherited_from: null
+  verdict: scored
+  score: 20
+  host_score: 20
+  density: 28.61
+  words: 699
+  tiers:
+    agentic: 3
+    core: 5
+    model: 12
+  ambiguous: 3
+  top_terms:
+    Llama: 10
+    LLMs: 3
+    AI: 2
+    agent: 2
+    agentic: 2
+    Hugging Face: 1
+    Mistral: 1
+    automation: 1
+    inference: 1
