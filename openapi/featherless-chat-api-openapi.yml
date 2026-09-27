@@ -46,6 +46,15 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   schemas:
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
     ChatMessage:
       type: object
       required:
@@ -66,6 +75,20 @@ components:
           - type: array
             items:
               type: object
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
     CreateChatCompletionRequest:
       type: object
       required:
@@ -141,15 +164,6 @@ components:
           type: boolean
           default: false
           description: If true, partial deltas are streamed as Server-Sent Events.
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     CreateChatCompletionResponse:
       type: object
       properties:
@@ -178,20 +192,6 @@ components:
                 - 'null'
         usage:
           $ref: '#/components/schemas/Usage'
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
   responses:
     Unauthorized:
       description: Missing or invalid API key.

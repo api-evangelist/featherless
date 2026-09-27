@@ -1,0 +1,62 @@
+# x-archived-from: recursal-ai-inc-account-api-openapi.yml
+# x-archived-on: 2026-09-26
+openapi: 3.2.0
+info:
+  title: Featherless AI Serverless Inference Account API
+  version: '1.0'
+  description: Faithful capture of the publicly documented, OpenAI-compatible serverless inference API operated by Recursal AI, Inc. under the Featherless AI brand. Only endpoints, methods, the Bearer security scheme, and parameters that Featherless publishes in its developer documentation are represented here; request/response schemas are intentionally minimal and honest rather than exhaustive. Base URL and auth per https://featherless.ai/docs/quickstart-guide.
+  x-generated: '2026-07-21'
+  x-method: generated
+  x-source: https://featherless.ai/docs/api-overview-and-common-options
+  x-note: Featherless does not publish a machine-readable OpenAPI document (api.featherless.ai/openapi.json -> 404); this is an API Evangelist capture of the documented REST surface, not the provider's own specification.
+servers:
+- url: https://api.featherless.ai/v1
+  description: Featherless AI production inference endpoint (OpenAI-compatible)
+security:
+- bearerAuth: []
+tags:
+- name: Account
+  description: Plan and concurrency information
+paths:
+  /plan:
+    get:
+      tags:
+      - Account
+      operationId: getPlan
+      summary: Get current plan
+      description: Return information about the authenticated account's subscription plan.
+      responses:
+        '200':
+          description: Plan information
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+  responses:
+    Unauthenticated:
+      description: API key is invalid or unrecognized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Featherless API key supplied as an HTTP Bearer token (Authorization: Bearer FEATHERLESS_API_KEY). Keys are created in account settings.'

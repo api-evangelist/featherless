@@ -34,31 +34,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Model:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Model identifier.
-        object:
-          type: string
-          enum:
-          - model
-        created:
-          type: integer
-        owned_by:
-          type: string
-    ListModelsResponse:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
     Error:
       type: object
       properties:
@@ -73,6 +48,31 @@ components:
               type:
               - string
               - 'null'
+    ListModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Model identifier.
+        object:
+          type: string
+          enum:
+          - model
+        created:
+          type: integer
+        owned_by:
+          type: string
   responses:
     Unauthorized:
       description: Missing or invalid API key.

@@ -40,12 +40,14 @@ tags:
 - Inference
 - Serverless
 - Open Models
+- Real-Time
 tags_raw:
 - AI
 - LLM
 - Inference
 - Serverless
 - Open Models
+- Real-Time
 created: '2026-06-21'
 modified: '2026-06-21'
 specificationVersion: '0.23'
@@ -138,6 +140,18 @@ apis:
     url: https://featherless.ai/docs/quickstart-guide
   - type: Documentation
     url: https://featherless.ai/docs/embeddings
+- aid: featherless:featherless-account-api
+  name: Featherless AI Account API
+  description: Plan and concurrency information
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/featherless-account-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/api-overview-and-common-options
 common:
 - type: AgenticAccess
   url: agentic-access/featherless-agentic-access.yml

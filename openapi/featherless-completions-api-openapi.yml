@@ -65,6 +65,34 @@ components:
               type:
               - string
               - 'null'
+    CreateCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type:
+                - string
+                - 'null'
+        usage:
+          $ref: '#/components/schemas/Usage'
     CreateCompletionRequest:
       type: object
       required:
@@ -114,34 +142,6 @@ components:
         stream:
           type: boolean
           default: false
-    CreateCompletionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - text_completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              text:
-                type: string
-              finish_reason:
-                type:
-                - string
-                - 'null'
-        usage:
-          $ref: '#/components/schemas/Usage'
   responses:
     Unauthorized:
       description: Missing or invalid API key.

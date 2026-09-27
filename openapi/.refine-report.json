@@ -1,21 +1,25 @@
 {
   "provider": "featherless",
   "sources": [
-    "_original/featherless-openapi.yml"
+    "_original/featherless-openapi.yml",
+    "recursal-ai-inc-account-api-openapi.yml"
   ],
   "outputs": [
     "featherless-chat-api-openapi.yml",
     "featherless-completions-api-openapi.yml",
     "featherless-embeddings-api-openapi.yml",
-    "featherless-models-api-openapi.yml"
+    "featherless-models-api-openapi.yml",
+    "featherless-account-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "archived openapi/recursal-ai-inc-account-api-openapi.yml"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "featherless-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "apis.yml register: written (+1 apis, 5 total)"
   ],
   "skipped": [
     "featherless-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
