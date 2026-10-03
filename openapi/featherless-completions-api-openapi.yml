@@ -51,20 +51,6 @@ components:
           type: integer
         total_tokens:
           type: integer
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
     CreateCompletionResponse:
       type: object
       properties:
@@ -93,6 +79,20 @@ components:
                 - 'null'
         usage:
           $ref: '#/components/schemas/Usage'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
     CreateCompletionRequest:
       type: object
       required:
@@ -143,14 +143,14 @@ components:
           type: boolean
           default: false
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:

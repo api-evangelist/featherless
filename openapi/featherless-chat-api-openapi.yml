@@ -75,20 +75,34 @@ components:
           - type: array
             items:
               type: object
-    Error:
+    CreateChatCompletionResponse:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/ChatMessage'
+              finish_reason:
+                type:
+                - string
+                - 'null'
+        usage:
+          $ref: '#/components/schemas/Usage'
     CreateChatCompletionRequest:
       type: object
       required:
@@ -164,43 +178,29 @@ components:
           type: boolean
           default: false
           description: If true, partial deltas are streamed as Server-Sent Events.
-    CreateChatCompletionResponse:
+    Error:
       type: object
       properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              message:
-                $ref: '#/components/schemas/ChatMessage'
-              finish_reason:
-                type:
-                - string
-                - 'null'
-        usage:
-          $ref: '#/components/schemas/Usage'
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:

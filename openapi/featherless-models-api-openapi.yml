@@ -48,17 +48,6 @@ components:
               type:
               - string
               - 'null'
-    ListModelsResponse:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
     Model:
       type: object
       properties:
@@ -73,6 +62,17 @@ components:
           type: integer
         owned_by:
           type: string
+    ListModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
   responses:
     Unauthorized:
       description: Missing or invalid API key.

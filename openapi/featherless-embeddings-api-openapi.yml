@@ -42,33 +42,46 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     TooManyRequests:
       description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    CreateEmbeddingRequest:
       type: object
+      required:
+      - model
+      - input
       properties:
-        error:
-          type: object
-          properties:
-            message:
+        model:
+          type: string
+          description: Embedding model identifier, e.g. `Qwen/Qwen3-Embedding-8B`.
+        input:
+          description: A string or array of strings to embed.
+          oneOf:
+          - type: string
+          - type: array
+            items:
               type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
+        encoding_format:
+          type: string
+          enum:
+          - float
+          - base64
+          default: float
+        dimensions:
+          type:
+          - integer
+          - 'null'
+          description: Output dimensionality, for models that support it.
     CreateEmbeddingResponse:
       type: object
       properties:
@@ -100,33 +113,20 @@ components:
               type: integer
             total_tokens:
               type: integer
-    CreateEmbeddingRequest:
+    Error:
       type: object
-      required:
-      - model
-      - input
       properties:
-        model:
-          type: string
-          description: Embedding model identifier, e.g. `Qwen/Qwen3-Embedding-8B`.
-        input:
-          description: A string or array of strings to embed.
-          oneOf:
-          - type: string
-          - type: array
-            items:
+        error:
+          type: object
+          properties:
+            message:
               type: string
-        encoding_format:
-          type: string
-          enum:
-          - float
-          - base64
-          default: float
-        dimensions:
-          type:
-          - integer
-          - 'null'
-          description: Output dimensionality, for models that support it.
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
   securitySchemes:
     bearerAuth:
       type: http
