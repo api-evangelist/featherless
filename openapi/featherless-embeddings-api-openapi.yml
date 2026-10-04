@@ -41,19 +41,6 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 components:
-  responses:
-    TooManyRequests:
-      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     CreateEmbeddingRequest:
       type: object
@@ -127,6 +114,19 @@ components:
               type:
               - string
               - 'null'
+  responses:
+    TooManyRequests:
+      description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

@@ -13,14 +13,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: Chat
+- name: Chat Completions
   description: OpenAI-compatible chat completions.
 paths:
   /chat/completions:
     post:
       operationId: createChatCompletion
       tags:
-      - Chat
+      - Chat Completions
       summary: Create a chat completion
       description: 'Generates a model response for the given chat conversation. OpenAI compatible. Set `stream: true` to receive the response as Server-Sent Events. Vision is supported by passing image_url content parts in messages, and tool calling by supplying `tools`.'
       requestBody:
@@ -46,15 +46,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   schemas:
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
     ChatMessage:
       type: object
       required:
@@ -103,6 +94,15 @@ components:
                 - 'null'
         usage:
           $ref: '#/components/schemas/Usage'
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
     CreateChatCompletionRequest:
       type: object
       required:

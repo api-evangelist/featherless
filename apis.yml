@@ -52,28 +52,6 @@ created: '2026-06-21'
 modified: '2026-06-21'
 specificationVersion: '0.23'
 apis:
-- aid: featherless:featherless-chat-api
-  name: Featherless AI Chat API
-  description: OpenAI-compatible chat completions.
-  humanURL: https://featherless.ai/docs/completions
-  baseURL: https://api.featherless.ai/v1
-  tags:
-  - Chat
-  properties:
-  - type: OpenAPI
-    url: openapi/featherless-chat-api-openapi.yml
-  - type: Documentation
-    url: https://featherless.ai/docs/completions
-  - type: APIReference
-    url: https://featherless.ai/docs/api-examples-and-snippets
-  - type: AsyncAPI
-    url: asyncapi/featherless-asyncapi.yml
-  - type: Postman
-    url: collections/featherless.postman_collection.json
-  - type: Documentation
-    url: https://featherless.ai/docs/quickstart-guide
-  - type: Documentation
-    url: https://featherless.ai/docs/embeddings
 - aid: featherless:featherless-completions-api
   name: Featherless AI Completions API
   description: OpenAI-compatible legacy text completions.
@@ -152,6 +130,28 @@ apis:
     url: openapi/featherless-account-api-openapi.yml
   - type: Documentation
     url: https://featherless.ai/docs/api-overview-and-common-options
+- aid: featherless:featherless-chat-completions-api
+  name: Featherless AI Chat Completions API
+  description: OpenAI-compatible chat completions.
+  humanURL: https://featherless.ai/docs/completions
+  baseURL: https://api.featherless.ai/v1
+  tags:
+  - Chat Completions
+  properties:
+  - type: OpenAPI
+    url: openapi/featherless-chat-completions-api-openapi.yml
+  - type: Documentation
+    url: https://featherless.ai/docs/completions
+  - type: APIReference
+    url: https://featherless.ai/docs/api-examples-and-snippets
+  - type: AsyncAPI
+    url: asyncapi/featherless-asyncapi.yml
+  - type: Postman
+    url: collections/featherless.postman_collection.json
+  - type: Documentation
+    url: https://featherless.ai/docs/quickstart-guide
+  - type: Documentation
+    url: https://featherless.ai/docs/embeddings
 common:
 - type: AgenticAccess
   url: agentic-access/featherless-agentic-access.yml

@@ -42,57 +42,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   schemas:
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
-    CreateCompletionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - text_completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              text:
-                type: string
-              finish_reason:
-                type:
-                - string
-                - 'null'
-        usage:
-          $ref: '#/components/schemas/Usage'
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
     CreateCompletionRequest:
       type: object
       required:
@@ -142,6 +91,57 @@ components:
         stream:
           type: boolean
           default: false
+    CreateCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type:
+                - string
+                - 'null'
+        usage:
+          $ref: '#/components/schemas/Usage'
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
   responses:
     TooManyRequests:
       description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.

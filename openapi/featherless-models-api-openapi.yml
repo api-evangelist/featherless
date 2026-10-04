@@ -34,20 +34,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
     Model:
       type: object
       properties:
@@ -73,6 +59,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Model'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
   responses:
     Unauthorized:
       description: Missing or invalid API key.
