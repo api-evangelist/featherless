@@ -153,6 +153,8 @@ apis:
   - type: Documentation
     url: https://featherless.ai/docs/embeddings
 common:
+- type: Pricing
+  url: https://featherless.ai/pricing
 - type: AgenticAccess
   url: agentic-access/featherless-agentic-access.yml
 - type: DomainSecurity
