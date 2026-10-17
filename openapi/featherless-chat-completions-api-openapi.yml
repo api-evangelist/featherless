@@ -46,26 +46,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
 components:
   schemas:
-    ChatMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - system
-          - user
-          - assistant
-          - tool
-        content:
-          description: String content, or an array of content parts (text and image_url) for vision-capable models.
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: object
     CreateChatCompletionResponse:
       type: object
       properties:
@@ -94,15 +74,20 @@ components:
                 - 'null'
         usage:
           $ref: '#/components/schemas/Usage'
-    Usage:
+    Error:
       type: object
       properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
     CreateChatCompletionRequest:
       type: object
       required:
@@ -178,20 +163,35 @@ components:
           type: boolean
           default: false
           description: If true, partial deltas are streamed as Server-Sent Events.
-    Error:
+    Usage:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type:
-              - string
-              - 'null'
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    ChatMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+        content:
+          description: String content, or an array of content parts (text and image_url) for vision-capable models.
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: object
   responses:
     TooManyRequests:
       description: Concurrency limit for the account's plan exceeded. Featherless meters concurrent connections rather than tokens.
