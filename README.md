@@ -1,4 +1,4 @@
-# Featherless AI (featherless)
+# Featherless AI
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,114 +66,142 @@
 
 Featherless AI is a serverless LLM inference platform that serves thousands of open-weight models from the Hugging Face catalog behind a single OpenAI-compatible REST API. It uses flat monthly subscription pricing with unlimited tokens rather than per-token billing, exposing chat completions, text completions, an embeddings endpoint, and a large models catalog.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/featherless/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/featherless/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · LLM · Inference · Serverless · Open Models · Real-Time
 
-## Tags
+## Featherless AI on APIs.io
 
-- AI
-- LLM
-- Inference
-- Serverless
-- Open Models
+Everything profiled for Featherless AI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/featherless/](https://apis.io/providers/featherless/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (5)
 
-- **Created:** 2026-06-21
-- **Modified:** 2026-06-21
+- [Featherless AI Completions API](https://apis.io/apis/featherless/featherless-completions-api/) — OpenAI-compatible legacy text completions.
+- [Featherless AI Embeddings API](https://apis.io/apis/featherless/featherless-embeddings-api/) — OpenAI-compatible text embeddings.
+- [Featherless AI Models API](https://apis.io/apis/featherless/featherless-models-api/) — Model catalog discovery.
+- [Featherless AI Account API](https://apis.io/apis/featherless/featherless-account-api/) — Plan and concurrency information
+- [Featherless AI Chat Completions API](https://apis.io/apis/featherless/featherless-chat-completions-api/) — OpenAI-compatible chat completions.
 
-## APIs
+### Published properties
 
-### Featherless Chat Completions API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-OpenAI-compatible chat completions across thousands of open-weight Hugging Face models, with streaming, tool calling, vision messages, and the full set of sampling parameters (temperature, top_p, top_k, min_p, penalties).
+#### AsyncAPI (1)
 
-- **Human URL:** [https://featherless.ai/docs/completions](https://featherless.ai/docs/completions)
-- **Base URL:** `https://api.featherless.ai/v1`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Featherless AI Chat Completions Streaming (HTTP + SSE)](https://apis.io/asyncapis/featherless/featherless-asyncapi/)
 
-- Chat
-- Completions
-- LLM
+#### Event channels (1)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://featherless.ai/docs/completions)
-- [API Reference](https://featherless.ai/docs/api-examples-and-snippets)
-- [OpenAPI](openapi/featherless-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [AsyncAPI](asyncapi/featherless-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Postman Collection](collections/featherless.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/featherless.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [/chat/completions](https://apis.io/channels/featherless/chat-completions/)
 
-### Featherless Completions API
+#### Agentic access (1)
 
-OpenAI-compatible legacy text completions endpoint accepting a prompt string (or array for parallel inference) against any catalog model, with the same sampling controls as chat completions.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://featherless.ai/docs/completions](https://featherless.ai/docs/completions)
-- **Base URL:** `https://api.featherless.ai/v1`
+- [Featherless Agentic Access](https://apis.io/agentic-access/featherless/featherless-agentic-access/)
 
-#### Tags
+#### Collections (5)
 
-- Completions
-- Text Generation
+Postman and Open Collection request collections.
 
-#### Properties
+- [Featherless AI API](https://apis.io/collections/featherless/open-featherless/)
+- [Featherless AI Chat API](https://apis.io/collections/featherless/open-featherless-chat-api/)
+- [Featherless AI Chat Completions API](https://apis.io/collections/featherless/open-featherless-completions-api/)
+- [Featherless AI Chat Embeddings API](https://apis.io/collections/featherless/open-featherless-embeddings-api/)
+- [Featherless AI Chat Models API](https://apis.io/collections/featherless/open-featherless-models-api/)
 
-- [Documentation](https://featherless.ai/docs/completions)
-- [API Reference](https://featherless.ai/docs/api-examples-and-snippets)
-- [OpenAPI](openapi/featherless-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/featherless.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/featherless.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Governance rules (1)
 
-### Featherless Models API
+Spectral rulesets for the provider's contracts.
 
-Lists the thousands of open-weight models available for serverless inference, surfaced through an OpenAI-compatible models endpoint for runtime discovery.
+- [Featherless AI — asyncapi rules](https://apis.io/rules/featherless/featherless-asyncapi-spectral-rules/)
 
-- **Human URL:** [https://featherless.ai/docs/quickstart-guide](https://featherless.ai/docs/quickstart-guide)
-- **Base URL:** `https://api.featherless.ai/v1`
+#### Security (2)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Models
-- Catalog
+- [Featherless Authentication](https://apis.io/security/featherless/featherless-authentication/)
+- [Featherless Domain Security](https://apis.io/security/featherless/featherless-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://featherless.ai/docs/quickstart-guide)
-- [OpenAPI](openapi/featherless-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/featherless.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/featherless.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published plans, tiers and prices.
 
-### Featherless Embeddings API
+- [Featherless Plans Pricing](https://apis.io/plans/featherless/featherless-plans-pricing/)
 
-OpenAI-compatible embeddings endpoint that returns vector representations for a string or array of inputs using open embedding models such as Qwen3-Embedding, with optional encoding_format and dimensions.
+#### Rate limits (1)
 
-- **Human URL:** [https://featherless.ai/docs/embeddings](https://featherless.ai/docs/embeddings)
-- **Base URL:** `https://api.featherless.ai/v1`
+Published request limits.
 
-#### Tags
+- [Featherless Rate Limits](https://apis.io/rate-limits/featherless/featherless-rate-limits/)
 
-- Embeddings
-- Vectors
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://featherless.ai/docs/embeddings)
-- [OpenAPI](openapi/featherless-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/featherless.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/featherless.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Featherless Finops](https://apis.io/finops/featherless/featherless-finops/)
 
-## Common Properties
+## Where to find this API
 
-- [GitHub Organization](https://github.com/featherless-ai)
-- [LinkedIn](https://www.linkedin.com/company/featherless-ai)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://featherless.ai/)
 - [Documentation](https://featherless.ai/docs/quickstart-guide)
-- [Plans](plans/featherless-plans-pricing.yml)
-- [Rate Limits](rate-limits/featherless-rate-limits.yml)
-- [Fin Ops](finops/featherless-finops.yml)
+- [Pricing](https://featherless.ai/pricing)
+- [Blog](https://featherless.ai/blog)
+- [GitHub](https://github.com/featherless-ai)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 36.1** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 52.9 |
+| Contract governance | 11.4 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 42.1 |
+
+**Agent readiness 19.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.9** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/featherless/](https://apis.io/providers/featherless/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Featherless AI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/featherless/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
